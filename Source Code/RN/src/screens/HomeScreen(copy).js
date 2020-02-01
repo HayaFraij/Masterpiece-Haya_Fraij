@@ -14,17 +14,11 @@ import {
   TouchableOpacity,
   TouchableOpacityBase
 } from 'react-native';
-import { Avatar, Rating, Button, Text, Card, Icon } from 'react-native-elements';
+import { Avatar, Rating, Button, Text, Card } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import axios from 'axios'
 import StarRating from 'react-native-star-rating';
-// import Dashboard2 from '../Haya/components/DashBoard(copy)'
-
-const codingAcademy = '10.60.247.112'
-const home = '192.168.1.92'
-const mobile = '172.20.10.4'
-const sakan = '192.168.1.112'
-const masterp = '10.6.210.55'
+import Icon from "react-native-vector-icons/FontAwesome";
 
 
 /// Sort Requirment:
@@ -45,14 +39,6 @@ const Categories = [{
 }, {
   value: 'Kids Needs',
 }]
-
-// const Location = [{
-//   value: 'amman1',
-// }, {
-//   value: 'amman2',
-// }, {
-//   value: 'amman3',
-// }]
 
 const isUrgent = [{
   value: 'true',
@@ -98,7 +84,7 @@ export default class SortItem extends Component {
     second: [],
     third: [],
     fourth: [],
-    color: 'blue',
+    color: '#16629E',
     display: false,
     // NewPost
     myPosts: [],
@@ -113,6 +99,8 @@ export default class SortItem extends Component {
       isUrgent: '',
       scheduledDate: '',
       Location: '',
+      requested: false,
+      listOfProviders: [],
       booking: false,
       userRating: this.props.navigation.getParam('user').rating,
       serveceProviderRating: 2,
@@ -132,26 +120,15 @@ export default class SortItem extends Component {
       })
   }
 
-  // componentWillMount () {
-  //   axios.get(`http://${home}:9000/posts/Price`)
-  //     .then(res => {
-  //       this.setState({ SortPrice_1: res.data })
-  //       console.log('price from react')
+  reset = () => {
+    axios.get(`http://${this.state.ipAddress}:9000/posts/posts`)
+      .then(res => {
+        this.setState({ myPosts: res.data })
+        this.setState({ display: false })
+        this.setState({ dataFlatlist: res.data })
+      })
+  }
 
-  //       // this.setState({ dataFlatlist: res.data })
-  //     })
-  // }
-
-
-
-
-  // componentWillMount () {
-  //   axios.get(`http://${home}:9000/posts/Price1`)
-  //     .then(res => {
-  //       this.setState({ SortPrice1: res.data })
-  //       // this.setState({ dataFlatlist: res.data })
-  //     })
-  // }
 
   // NewPost 
   _onPressButton = () => {
@@ -182,11 +159,12 @@ export default class SortItem extends Component {
   render() {
     return (
       <ScrollView>
+        <View style={styles.body}>
         {/* DashBoard */}
         <View>
           <TouchableOpacity
             style={{ marginBottom: 30, justifyContent: 'center' }}
-            onPress={() => this.props.navigation.navigate('DashBoard2', {
+            onPress={() => this.props.navigation.navigate('Dashboard', {
               user: this.props.navigation.getParam('user'),
               ipAddress: this.props.navigation.getParam('ipAddress')
             })}
@@ -212,28 +190,18 @@ export default class SortItem extends Component {
               </View>
             </View>
           </TouchableOpacity>
-          {/* <Button title = 'DashBoard' /> */}
         </View>
         <Text>{this.state.dataFlatlist.length}</Text>
-        {/* <View style={{ borderColer: '#31063D', borderRadius: 10, borderWidth: 2, margin: 20, width: 200 }}> */}
 
 
         {/* Sort */}
-        <Card
-        // wrapperStyle = {{borderColer: 'red'}}
-        // baseColor='#074445'
-        // textColor = 'blue'
-        // itemColor = 'red'
-        // selectedItemColor = '#900C3F'
-        >
+        <Card>
+        {/* <View  style={{backgroundColor: '#C8D9E7', margin: 0}} > */}
           <Dropdown
             baseColor='#900C3F'
-            // textColor = 'blue'
-            // itemColor = 'red'
             selectedItemColor='#3F082A'
             label='Sort By: '
             data={sortByData}
-            // style = {{ }}
             onChangeText={(value) => {
               this.setState({ sortBy: value })
               this.setState({ display: true })
@@ -261,26 +229,11 @@ export default class SortItem extends Component {
                   if (value === 'Hight to low') {
                     let first = this.state.myPosts.sort((a, b) => parseFloat(b.Price) - parseFloat(a.Price))
                     this.setState({ first })
-
-                    // this.setState({ first: this.state.SortPrice_1 })
                   }
                   else if (value === 'Low to high') {
                     let first = this.state.myPosts.sort((a, b) => parseFloat(a.Price) - parseFloat(b.Price))
                     this.setState({ first })
-                    // this.setState({ first: this.state.SortPrice1 })
                   } else {
-                    // this.setState({ first })
-                    // this.setState({ dataFlatlist: this.state.first })
-
-                    // {console.log('this.state.first', this.state.first)}
-                    // if( this.state.sortBy === 'isUrgent' && value === 'Urgent'){
-                    // let first = this.state.myPosts.filter(elem => elem.IsUrgen === true)
-                    // }
-                    // else if (this.state.sortBy === 'isUrgent' && value === 'Schadualed'){
-                    // let first = this.state.myPosts.filter(elem => elem.IsUrgen === false)
-                    // } 
-                    // else
-                    // {
                     let first = this.state.myPosts.filter(elem => elem[this.state.sortBy] === value)
                     this.setState({ first })
                   }
@@ -350,74 +303,21 @@ export default class SortItem extends Component {
             />
             : null
           }
+          <Button
+            buttonStyle={{
+              borderRadius: 10,
+              width: 100,
+              backgroundColor: "#841584"
+            }}
+            title="Rest Filter"
+            onPress={this.reset}
+          />
+        {/* </View> */}
         </Card>
-        {/* </View> */}
 
 
-
-
-
-        {/* {console.log('sort myPosts', this.state.myPosts.sort((a, b) => parseFloat(a.Price) - parseFloat(b.Price)))} */}
-
-
-
-
-
-
-
-
-        {/* NewPost */}
-        {/* <View style={{ borderColer: 'black', borderWidth: 2, margin: 20 }}> */}
-        <ScrollView>
-          {/* <Text>{console.log('this.state.SortPrice1', this.state.SortPrice1)}</Text> */}
-          {/* <Text>{console.log('this.state.SortPrice_1', this.state.SortPrice_1)}</Text> */}
-
-          <Card style={{ borderColer: 'blue', justifyContent: 'center' }}>
-            <TextInput onChangeText={(task) => this.setState({ newPostState: { ...this.state.newPostState, task: task } })}
-              label=' task ' style={{ borderColor: '#0C7576', borderWidth: 1, margin: 20, padding: 10, borderRadius: 7 }}
-              placeholder=" Task Describtion.. "
-              placeholderTextColor="#074445" />
-            <TextInput onChangeText={(Price) => this.setState({ newPostState: { ...this.state.newPostState, Price: Price } })}
-              label='price ' placeholder="Price"
-              placeholderTextColor="#074445"
-              style={{ borderColor: '#0C7576', borderWidth: 1, margin: 20, padding: 10, borderRadius: 7 }} />
-            <Dropdown
-              baseColor='#40082A'
-              selectedItemColor='#900C3F'
-
-              label='Categories'
-              data={Categories}
-              onChangeText={(Categories) => this.setState({ newPostState: { ...this.state.newPostState, Categories: Categories } })}
-            />
-            <Dropdown
-              baseColor='#40082A'
-              selectedItemColor='#900C3F'
-              label='isUrgent'
-              data={[{ value: 'Urgent', }, { value: 'Schaduled', }]}
-              onChangeText={isUrgent => { this.setState({ newPostState: { ...this.state.newPostState, isUrgent: isUrgent } }) }
-              }
-            />
-            <Dropdown
-              baseColor='#40082A'
-              selectedItemColor='#900C3F'
-
-              onChangeText={(Location) => this.setState({ newPostState: { ...this.state.newPostState, Location: Location } })}
-              label='Region'
-              data={Location}
-            />
-            <View style={{ alignSelf: 'center' }}>
-              <Button
-                onPress={this._onPressButton}
-                title="New Post"
-                buttonStyle={{ backgroundColor: '#074445', marginTop: 40, width: 200 }}
-              />
-            </View>
-          </Card>
-        </ScrollView>
-        {/* </View> */}
 
         {/* posts */}
-        {/* style={{ borderColer: '#900C3F', borderWidth: 2, margin: 20, padding: 20 }} */}
         <View style={{ marginTop: 30, flexDirection: 'row-reverse' }}>
           <FlatList
             inverted={true}
@@ -425,62 +325,72 @@ export default class SortItem extends Component {
             renderItem={({ item }) =>
               <View style={styles.ContainerView}>
                 <View style={styles.listView}>
-                  <Avatar rounded title='MG' />
-                  <Text style={styles.NameView}> {item.serveceProvider} </Text>
+                  <Avatar rounded title='NU' />
+                  <Text style={styles.NameView}> {item.user} </Text>
                   <Text note style={styles.TimeView}> {item.time} </Text>
                 </View>
                 <View style={styles.listView}>
                   <StarRating
                     maxStars={5}
-                    rating={item.userRating} // it should be this.props.userRating
+                    rating={item.userRating}
                     starSize={15}
                     fullStarColor='gold'
                   />
                 </View>
-                <View style={styles.listView}>
-                  <Text> {item.task} </Text>
+                <View style={styles.listInfo}>
+                  <Icon
+                    name="file-text-o"
+                    color="#660066"
+                    size={20}
+                  />
+                  <Text style={styles.textLarge}> {item.task} </Text>
                 </View>
-                <View style={styles.listView}>
-                  <Text note> {item.userRating} </Text>
+                <View style={styles.listInfo}>
+                  <Icon
+                    name="dollar"
+                    color="#660066"
+                    size={20}
+                  />
+                  <Text style={styles.textLarge}>{item.Price}</Text>
                 </View>
-                <View style={styles.listView}>
-                <Icon
-  raised
-  name='doller'
-  type='font-awesome'
-  color='#f50'
-  onPress={() => console.log('hello')} />
-
-                  <Text>{item.Price}</Text>
+                <View style={styles.listInfo}>
+                  <Icon
+                    name="list"
+                    color="#660066"
+                    size={12}
+                  />
+                  <Text style={styles.textSmall}>
+                    {item.Categories}
+                  </Text>
                 </View>
-                <View style={styles.listView}>
-                </View>
-                <View style={styles.listView}>
-                  <Text>{item.isUrgent}</Text>
-                </View>
-                <View style={styles.listView}>
-                  <Text>
-                    Categories: {item.Categories}
+                <View style={styles.listInfo}>
+                  <Icon
+                    name="location-arrow"
+                    color="#660066"
+                    size={12}
+                  />
+                  <Text style={styles.textSmall}>
+                    {item.Location}
                   </Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                   <Button
                     buttonStyle={{ marginTop: 15, width: 100, marginRight: 10, backgroundColor: this.state.color }}
-                    title='book'
+                    title='Book'
                     onPress={this.book.bind(this, item._id)}
                   >
                   </Button>
                   <TouchableOpacity
-                    style={{ backgroundColor: "red", marginLeft: 10, marginTop: 15, width: 80, height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
+                    style={{ backgroundColor: "#CF0707", marginLeft: 10, marginTop: 15, width: 80, height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
                     onPress={async () => {
                       let res = await axios.put(
-                        `http://${masterp}:9000/posts/report/${item._id}`
+                        `http://${this.state.ipAddress}:9000/posts/report/${item._id}`
                       );
                       await this.setState({ myPosts: res.data, dataFlatlist: res.data });
                       console.log(item.reports);
                       if (item.reports >= 2) {
                         let res = await axios.put(
-                          `http://${masterp}:9000/posts/report2/${item._id}`
+                          `http://${this.state.ipAddress}:9000/posts/report2/${item._id}`
                         );
                         await this.setState({ myPosts: res.data, dataFlatlist: res.data });
                       }
@@ -495,6 +405,8 @@ export default class SortItem extends Component {
             keyExtractor={item => item._id}
           />
         </View>
+
+        </View>
       </ScrollView>
     )
   }
@@ -502,19 +414,20 @@ export default class SortItem extends Component {
 
 
 const styles = StyleSheet.create({
+  body: {
+    backgroundColor: '#C8D9E7'
+  },
   ContainerView: {
-    // backgroundColor: '#94948C',
     flex: 1,
     borderColor: '#900C3F',
     borderRadius: 10,
     borderWidth: 1,
     padding: 20,
     margin: 20,
+    backgroundColor: '#C8D9E7'
   },
   listView: {
-    backgroundColor: '#fff',
     flexDirection: 'row',
-    fontSize: 18,
     textAlign: 'justify',
     lineHeight: 30,
   },
@@ -530,9 +443,22 @@ const styles = StyleSheet.create({
     paddingTop: 7
   },
   stars: {
-    // width: 40,
     alignItems: 'flex-start',
     margin: 10,
     flexDirection: 'row',
-  }
+  },
+  textLarge: {
+    marginLeft: 10,
+    fontSize: 18
+  },
+  textSmall: {
+    marginLeft: 15,
+    fontSize: 12
+  },
+  listInfo: {
+    flexDirection: 'row',
+    textAlign: 'justify',
+    lineHeight: 30,
+    marginTop: 20,
+  },
 });

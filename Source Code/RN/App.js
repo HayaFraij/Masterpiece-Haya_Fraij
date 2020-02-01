@@ -1,6 +1,6 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import UserHomeScreen from './src/screens/UserHomeScreen';
-import ServeceProviderHome from './src/screens/ServeceProviderHome';
+// import UserHomeScreen from './src/screens/UserHomeScreen';
+// import ServeceProviderHome from './src/screens/ServeceProviderHome';
 
 // import Sort from './src/Haya/components/Sort'
 // import Haya from "./src/Haya/HayaApp"

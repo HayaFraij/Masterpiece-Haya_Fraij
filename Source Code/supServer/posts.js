@@ -49,9 +49,21 @@ router.get('/getNotRequested/:user', (req, res) => {
   })
 });
 
+
+router.get('/getSPPosts/:user', (req, res) => {
+  let userName = req.params.user
+  mongo.getSPPosts(userName, result => {
+    // console.log('hello from server history', userName, result)
+    // console.log('result', result)
+      res.json(result)
+  })
+});
+
+
+
 router.get('/posts', (req, res) => {
   mongo.getTasks((result) => {
-  console.log('hello from serverrrr')
+  // console.log('hello from serverrrr')
       res.json(result);
   })
 })

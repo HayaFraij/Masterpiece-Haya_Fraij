@@ -31,6 +31,7 @@ class HistoryItem extends Component {
     serveceProvider: 'name',
     display: false,
     starCount: 4,
+    PHistory: []
   }
 
   onStarRatingPress = (rating) => {
@@ -40,21 +41,24 @@ class HistoryItem extends Component {
   }
 
   componentWillMount() {
-    axios.get(`http://${this.props.ipAddress}:9000/posts/getRequested/${this.props.user.name}`)
+    axios.get(`http://${this.props.ipAddress}:9000/posts/getSPPosts/${this.props.user.name}`)
 
       .then(res => {
-        let requested = []
-        let notRequested = []
-        for(let i = 0; i < res.data.length; i++) {
-          if(res.data[i].requested === true) {
-            requested.push(res.data[i])
-          }
-          else if (res.data[i].requested === false) {
-            notRequested.push(res.data[i])
-          }
-        }
-        this.setState({ requested: requested })
-        this.setState({ notRequested: notRequested })
+        // let requested = []
+        // let notRequested = []
+        // for(let i = 0; i < res.data.length; i++) {
+        //   if(res.data[i].requested === true) {
+        //     requested.push(res.data[i])
+        //   }
+        //   else if (res.data[i].requested === false) {
+        //     notRequested.push(res.data[i])
+        //   }
+        // }
+        // this.setState({ requested: requested })
+        // this.setState({ notRequested: notRequested })
+
+
+        this.setState({PHistory : res.data})
       })
   }
 

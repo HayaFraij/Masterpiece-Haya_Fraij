@@ -3,6 +3,11 @@ import { Text, View, TextInput, Button, ScrollView } from "react-native";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 
 class ContactUsScreen extends Component {
+  
+  send(){
+    alert('Thank You,, We will contact you as soon as posible : ))')
+  }
+
   render() {
     return (
       <>
@@ -66,7 +71,7 @@ class ContactUsScreen extends Component {
                 />
               </View>
               <View>
-                <Button title="Send" />
+                <Button title="Send" onPress = {this.send}/>
               </View>
             </View>
           </ScrollView>

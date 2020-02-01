@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import Requested from '../components/Requested'
+import Requested from '../components/Requested(copy)'
 
 import {
   SafeAreaView,
@@ -31,6 +31,8 @@ class HistoryItem extends Component {
     serveceProvider: 'name',
     display: false,
     starCount: 4,
+    PHistory: []
+
   }
 
   onStarRatingPress = (rating) => {
@@ -40,21 +42,25 @@ class HistoryItem extends Component {
   }
 
   componentWillMount() {
-    axios.get(`http://${this.props.ipAddress}:9000/posts/getRequested/${this.props.user.name}`)
+    axios.get(`http://${this.props.ipAddress}:9000/posts/getSPPosts/${this.props.user.name}`)
 
       .then(res => {
-        let requested = []
-        let notRequested = []
+        let inProgress = []
+        let accomplished = []
         for(let i = 0; i < res.data.length; i++) {
-          if(res.data[i].requested === true) {
-            requested.push(res.data[i])
+          if(res.data[i].inProgress === true) {
+            inProgress.push(res.data[i])
           }
-          else if (res.data[i].requested === false) {
-            notRequested.push(res.data[i])
+          else if (res.data[i].accomplished === false) {
+            accomplished.push(res.data[i])
           }
         }
-        this.setState({ requested: requested })
-        this.setState({ notRequested: notRequested })
+        this.setState({ inProgress })
+        this.setState({ accomplished })
+
+        // this.setState({PHistory : res.data})
+        // console.log('this.state.PHistory', this.state.PHistory)
+
       })
   }
 
@@ -69,15 +75,15 @@ class HistoryItem extends Component {
   render() {
     return (
       <Fragment >
-        <Text>Your Requested Posts: </Text>
-        <Requested requested = {this.state.requested} ipAddress = {this.props.ipAddress}/>
-        <Text>Your NOT Requested Posts: </Text>
+        <Text>inProgress Tasks: </Text>
+        <Requested inProgress = {this.state.inProgress} ipAddress = {this.props.ipAddress}/>
+        {/* <Text>Your NOT Requested Posts: </Text> */}
         <View style={styles.info}>
           <View style={styles.historyContainer}>
             
             <FlatList
               inverted={true}
-              data={this.state.notRequested}
+              data={this.state.accomplished}
               renderItem={({ item }) => {
                 return (
                   <Card>

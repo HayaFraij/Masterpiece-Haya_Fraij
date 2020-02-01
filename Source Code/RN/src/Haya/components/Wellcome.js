@@ -14,12 +14,13 @@ import {
   Image,
 } from 'react-native';
 
-import { Avatar, Rating, Button, Text, Card, Icon } from 'react-native-elements';
+import { Avatar, Rating, Button, Text, Card, Input } from 'react-native-elements';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 
 class Wellcome extends Component {
   state = {
-    ipAddress: '10.6.208.160'
+    ipAddress: '172.20.10.2'
   }
 
   render() {

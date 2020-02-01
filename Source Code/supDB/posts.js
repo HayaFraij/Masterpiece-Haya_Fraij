@@ -32,7 +32,7 @@ let creatFirstPost = (cb) => {
 }
     
 let getTasks = (cb) => {
-  db.posts.find({booking: false}, (err, data) => {
+  db.posts.find({inProgress: false, accomplished: false}, (err, data) => {
       if (err) {
           cb(err)
       } else {
@@ -80,6 +80,19 @@ let getAll = (cb) => {
 
   let getRequested = (user, cb) => {
     db.posts.find({user: user}, {accomplished: false}, (err, data) => {
+      if (err) {
+        cb(err);
+      } else {
+      // console.log('hello from database history', data)
+        // console.log("data:", data);
+        // gecbtAll(cb);
+        cb(data)
+      }
+    });
+  };
+
+  let getSPPosts = (user, cb) => {
+    db.posts.find({serveceProvider: user}, (err, data) => {
       if (err) {
         cb(err);
       } else {
@@ -244,5 +257,6 @@ let creatNewPost = (newPost, cb) => {
     report,
     report2,
     Price,
-    Price1
+    Price1,
+    getSPPosts
   }

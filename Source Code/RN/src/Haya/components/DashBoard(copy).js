@@ -14,7 +14,7 @@ import {
   Image
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
-import HistoryItem from './HistoryItem'
+import HistoryItem from './HistoryItem(copy)'
 
 class DashBoard extends Component {
     state = {
@@ -33,7 +33,7 @@ onStarRatingPress = (rating) => {
         return (
           <Fragment>
             <Text>
-              DashBoard2
+              {/* DashBoard2 */}
               {/* {this.props.navigation.getParam('ipAddress')} */}
             </Text>
             <ScrollView>
@@ -54,9 +54,9 @@ onStarRatingPress = (rating) => {
             />
             </View>
             <View>
-              <Text>
+              {/* <Text>
                 Your History:
-              </Text>
+              </Text> */}
               <View style={styles.historyContainer}>
                 {/* <Text>{this.state.user.name}</Text> */}
                 <HistoryItem user = {this.state.user} ipAddress = {this.props.navigation.getParam('ipAddress')}/>

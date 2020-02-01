@@ -15,10 +15,6 @@ import {
   TouchableOpacity
   
 } from "react-native";
-const ORANGE_IP1 = "10.60.247.112";
-const ORANGE_IP2 = "10.60.241.4";
-const codingAcademy0 = '10.6.210.55'
-
 class SignupScreen extends Component {
   state = {
     name: "",

@@ -18,6 +18,7 @@ import { Avatar, Rating, Button, Text, Card } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import axios from 'axios'
 import StarRating from 'react-native-star-rating';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 
 /// Sort Requirment:
@@ -83,7 +84,7 @@ export default class SortItem extends Component {
     second: [],
     third: [],
     fourth: [],
-    color: 'blue',
+    color: '#16629E',
     display: false,
     // NewPost
     myPosts: [],
@@ -119,13 +120,13 @@ export default class SortItem extends Component {
       })
   }
 
-  reset = ()=>{
+  reset = () => {
     axios.get(`http://${this.state.ipAddress}:9000/posts/posts`)
-    .then(res => {
-      this.setState({ myPosts: res.data })
-      this.setState({ display: false })
-      this.setState({ dataFlatlist: res.data })
-    })
+      .then(res => {
+        this.setState({ myPosts: res.data })
+        this.setState({ display: false })
+        this.setState({ dataFlatlist: res.data })
+      })
   }
   // componentWillMount () {
   //   axios.get(`http://${home}:9000/posts/Price`)
@@ -177,6 +178,7 @@ export default class SortItem extends Component {
   render() {
     return (
       <ScrollView>
+        <View style={styles.body}>
         {/* DashBoard */}
         <View>
           <TouchableOpacity
@@ -184,7 +186,7 @@ export default class SortItem extends Component {
             onPress={() => this.props.navigation.navigate('Dashboard', {
               user: this.props.navigation.getParam('user'),
               ipAddress: this.props.navigation.getParam('ipAddress')
-           })}
+            })}
           >
             <View
               style={{ justifyContent: 'center' }}
@@ -339,14 +341,14 @@ export default class SortItem extends Component {
             : null
           }
           <Button
-                    buttonStyle={{
-                      borderRadius: 10,
-                      width: 100,
-                      backgroundColor: "#841584"
-                    }}
-                    title="Rest Filter"
-                    onPress={this.reset}
-                  />
+            buttonStyle={{
+              borderRadius: 10,
+              width: 100,
+              backgroundColor: "#841584"
+            }}
+            title="Rest Filter"
+            onPress={this.reset}
+          />
         </Card>
         {/* </View> */}
 
@@ -422,46 +424,69 @@ export default class SortItem extends Component {
             renderItem={({ item }) =>
               <View style={styles.ContainerView}>
                 <View style={styles.listView}>
-                  <Avatar rounded title='MG' />
-                  <Text style={styles.NameView}> {item.serveceProvider} </Text>
+                  <Avatar rounded title='NU' />
+                  <Text style={styles.NameView}> {item.user} </Text>
+                  {/* <Icon style={styles.TimeView} name='calendar' color='#660066' size={18} /> */}
                   <Text note style={styles.TimeView}> {item.time} </Text>
                 </View>
                 <View style={styles.listView}>
                   <StarRating
                     maxStars={5}
-                    rating={item.userRating} // it should be this.props.userRating
+                    rating={item.userRating}
                     starSize={15}
                     fullStarColor='gold'
                   />
                 </View>
-                <View style={styles.listView}>
-                  <Text> {item.task} </Text>
+                <View style={styles.listInfo}>
+                  <Icon
+                    name="file-text-o"
+                    color="#660066"
+                    size={20}
+                  />
+                  <Text style={styles.textLarge}> {item.task} </Text>
                 </View>
-                <View style={styles.listView}>
-                  <Text note> {item.serverProviderRating} </Text>
+                <View style={styles.listInfo}>
+                  <Icon
+                    name="dollar"
+                    color="#660066"
+                    size={20}
+                  />
+                  <Text style={styles.textLarge}>{item.Price}</Text>
                 </View>
-                <View style={styles.listView}>
-                  <Text>{item.Price}</Text>
-                </View>
-                <View style={styles.listView}>
-                </View>
-                <View style={styles.listView}>
+                {/* <View style={styles.listView}>
+                </View> */}
+                {/* <View style={styles.listView}>
                   <Text>{item.isUrgent}</Text>
+                </View> */}
+                <View style={styles.listInfo}>
+                  <Icon
+                    name="list"
+                    color="#660066"
+                    size={12}
+                  />
+                  <Text style={styles.textSmall}>
+                    {item.Categories}
+                  </Text>
                 </View>
-                <View style={styles.listView}>
-                  <Text>
-                    Categories: {item.Categories}
+                <View style={styles.listInfo}>
+                  <Icon
+                    name="location-arrow"
+                    color="#660066"
+                    size={12}
+                  />
+                  <Text style={styles.textSmall}>
+                    {item.Location}
                   </Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                   <Button
                     buttonStyle={{ marginTop: 15, width: 100, marginRight: 10, backgroundColor: this.state.color }}
-                    title='book'
+                    title='Book'
                     onPress={this.book.bind(this, item._id)}
                   >
                   </Button>
                   <TouchableOpacity
-                    style={{ backgroundColor: "red", marginLeft: 10, marginTop: 15, width: 80, height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
+                    style={{ backgroundColor: "#CF0707", marginLeft: 10, marginTop: 15, width: 80, height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
                     onPress={async () => {
                       let res = await axios.put(
                         `http://${this.state.ipAddress}:9000/posts/report/${item._id}`
@@ -485,6 +510,8 @@ export default class SortItem extends Component {
             keyExtractor={item => item._id}
           />
         </View>
+
+        </View>
       </ScrollView>
     )
   }
@@ -492,6 +519,9 @@ export default class SortItem extends Component {
 
 
 const styles = StyleSheet.create({
+  body: {
+    backgroundColor: '#C8D9E7'
+  },
   ContainerView: {
     // backgroundColor: '#94948C',
     flex: 1,
@@ -500,13 +530,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 20,
     margin: 20,
+    backgroundColor: '#C8D9E7'
   },
   listView: {
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     flexDirection: 'row',
-    fontSize: 18,
+    // fontSize: 25,
     textAlign: 'justify',
     lineHeight: 30,
+    // marginTop: 20,
   },
   TimeView: {
     position: 'absolute',
@@ -524,5 +556,21 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     margin: 10,
     flexDirection: 'row',
-  }
+  },
+  textLarge: {
+    marginLeft: 10,
+    fontSize: 18
+  },
+  textSmall: {
+    marginLeft: 15,
+    fontSize: 12
+  },
+  listInfo: {
+    // backgroundColor: '#fff',
+    flexDirection: 'row',
+    // fontSize: 25,
+    textAlign: 'justify',
+    lineHeight: 30,
+    marginTop: 20,
+  },
 });
