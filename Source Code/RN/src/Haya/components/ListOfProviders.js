@@ -45,8 +45,8 @@ class ListOfProviders extends Component {
 		axios.put(`http://${this.props.ipAddress}:9000/posts/updateProvider/${this.props.postId}/${serviceProvider}`)
 			.then(res => {
 				this.setState({ display: !this.state.display })
-      })
-      // this.props.refreshing()
+			})
+		// this.props.refreshing()
 	}
 	render() {
 		return (

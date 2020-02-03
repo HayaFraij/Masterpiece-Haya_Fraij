@@ -100,6 +100,8 @@ export default class SortItem extends Component {
       scheduledDate: '',
       Location: '',
       requested: false,
+      inProgress: false,
+      accomplished:false,
       listOfProviders: [],
       booking: false,
       userRating: this.props.navigation.getParam('user').rating,
@@ -210,7 +212,7 @@ export default class SortItem extends Component {
             </View>
           </TouchableOpacity>
         </View>
-        <Text>{this.state.dataFlatlist.length}</Text>
+        {/* <Text>{this.state.dataFlatlist.length}</Text> */}
 
 
         {/* Sort */}

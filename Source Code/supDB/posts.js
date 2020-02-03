@@ -92,7 +92,7 @@ let getAll = (cb) => {
   };
 
   let getSPPosts = (user, cb) => {
-    db.posts.find({serveceProvider: user}, (err, data) => {
+    db.posts.find({listOfProviders: { $in: [user]}}, (err, data) => {
       if (err) {
         cb(err);
       } else {
@@ -171,13 +171,10 @@ let creatNewPost = (newPost, cb) => {
 
         let updateProvider = (id, serviceProvider, cb) => {
           console.log('serviceProvider from database', serviceProvider)
-
           db.posts.updateOne({_id: id}, {$set: {serveceProvider: serviceProvider, inProgress: true}},  (err, data) => {
             if (err) {
               cb(err);
             } else {
-            // console.log('hello from database')
-              // console.log("data:", data);
               getTasks(cb);
             }
           })

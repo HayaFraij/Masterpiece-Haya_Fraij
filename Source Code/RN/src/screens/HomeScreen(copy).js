@@ -164,7 +164,7 @@ export default class SortItem extends Component {
         <View>
           <TouchableOpacity
             style={{ marginBottom: 30, justifyContent: 'center' }}
-            onPress={() => this.props.navigation.navigate('Dashboard', {
+            onPress={() => this.props.navigation.navigate('DashBoard2', {
               user: this.props.navigation.getParam('user'),
               ipAddress: this.props.navigation.getParam('ipAddress')
             })}
@@ -191,7 +191,7 @@ export default class SortItem extends Component {
             </View>
           </TouchableOpacity>
         </View>
-        <Text>{this.state.dataFlatlist.length}</Text>
+        {/* <Text>{this.state.dataFlatlist.length}</Text> */}
 
 
         {/* Sort */}

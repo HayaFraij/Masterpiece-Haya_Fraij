@@ -25,8 +25,9 @@ const { ToastModule } = NativeModules
 
 class HistoryItem extends Component {
   state = {
-    requested: [],
-    notRequested: [],
+    inProgress: [],
+    pending: [],
+    accomplished: [],
     listOfProviders: [],
     serveceProvider: 'name',
     display: false,
@@ -45,17 +46,24 @@ class HistoryItem extends Component {
     axios.get(`http://${this.props.ipAddress}:9000/posts/getSPPosts/${this.props.user.name}`)
 
       .then(res => {
+        console.log('posts for service provider', res.data)
+        let pending = []
         let inProgress = []
         let accomplished = []
         for(let i = 0; i < res.data.length; i++) {
           if(res.data[i].inProgress === true) {
             inProgress.push(res.data[i])
           }
-          else if (res.data[i].accomplished === false) {
+          else {
+            pending.push(res.data[i])
+          }
+          
+          if (res.data[i].accomplished === true) {
             accomplished.push(res.data[i])
           }
         }
         this.setState({ inProgress })
+        this.setState({ pending })
         this.setState({ accomplished })
 
         // this.setState({PHistory : res.data})
@@ -77,10 +85,41 @@ class HistoryItem extends Component {
       <Fragment >
         <Text>inProgress Tasks: </Text>
         <Requested inProgress = {this.state.inProgress} ipAddress = {this.props.ipAddress}/>
-        {/* <Text>Your NOT Requested Posts: </Text> */}
+        
         <View style={styles.info}>
           <View style={styles.historyContainer}>
             
+        <Text>Your pending Tasks: </Text>
+            <FlatList
+              inverted={true}
+              data={this.state.pending}
+              renderItem={({ item }) => {
+                return (
+                  <Card>
+                    {/* <Text>isRequested? </Text>
+                    {((item.requested) ? <Text>True</Text> : <Text>False</Text>)} */}
+                    <Text>Task Discription: </Text>
+                    <Text>{item.task} !</Text>
+                    <View style={styles.row}>
+                      <Text>Price:</Text>
+                      <Text>{item.Price}</Text>
+                    </View>
+                    <View style={styles.row}>
+                      <Text>Date: </Text>
+                      <Text>{item.scheduledDate}!</Text>
+                    </View>
+                  </Card>
+                )
+              }}
+              keyExtractor={item => item._id}
+            />
+          </View>
+        </View>
+        
+        <View style={styles.info}>
+          <View style={styles.historyContainer}>
+            
+        <Text>Your accomplished Tasks: </Text>
             <FlatList
               inverted={true}
               data={this.state.accomplished}

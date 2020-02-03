@@ -89,7 +89,7 @@ class Requested extends Component {
           <View style={styles.historyContainer}></View>
           <FlatList
             inverted={true}
-            data={this.props.requested}
+            data={this.props.inProgress}
             renderItem={({ item }) => {
               return (
                 <Card>
@@ -113,11 +113,6 @@ class Requested extends Component {
                     <Text>{item.Price} </Text>
                   </View>
                   <View>
-                    {(item.serveceProvider) ?
-                      <View>
-                        <Text>Service Provider: </Text>
-                        <Text>{item.serveceProvider} </Text>
-
                         <Text>Please Rate your Provider</Text>
                         <View style={styles.stars}>
 
@@ -130,59 +125,6 @@ class Requested extends Component {
                             selectedStar={(rating) => this.onStarRatingPress(rating)}
                           />
                         </View>
-                        <Button
-                          title='Done'
-                          onPress={this.doneTask}
-                        />
-                      </View>
-                      :
-                      <View>
-                        <ListOfProviders ipAddress={this.props.ipAddress} listOfProviders={item.listOfProviders} postId={item._id} refreshing={this.refreshing.bind(this)} />
-
-
-                        {/* <Button
-                          title='Providers'
-                          onPress={this.serveceProvider.bind(this, item.listOfProviders, item._id)} />
-                        {this.state.display ?
-                          <View>
-                            <FlatList
-                              inverted={true}
-                              data={this.state.listOfProviders}
-                              renderItem={({ item }) => {
-                                return (
-                                  <Card>
-                                    {console.log('hey haya !')}
-                                    <Text>
-                                      The serveceProvider Name:
-                                      {item.name}
-                                    </Text>
-                                    <Text>
-                                      Rating:
-										                </Text>
-                                    <View style={styles.stars}>
-                                      <StarRating
-                                        maxStars={5}
-                                        rating={item.rating}
-                                        starSize={13}
-                                        fullStarColor='gold'
-                                      />
-                                    </View>
-                                    <Button
-                                      title='Select'
-                                      onPress={this.updateProvider.bind(this, item.name, item._id)}
-                                    />
-                                  </Card>
-                                )
-                              }}
-                            />
-                          </View>
-                          :
-                          null
-                        } */}
-
-
-                      </View>
-                    }
                   </View>
                 </Card>
               )

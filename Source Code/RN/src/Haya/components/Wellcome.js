@@ -20,7 +20,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 class Wellcome extends Component {
   state = {
-    ipAddress: '172.20.10.2'
+    ipAddress: '10.60.247.112'
   }
 
   render() {
